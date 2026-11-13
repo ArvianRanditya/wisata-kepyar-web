@@ -121,7 +121,6 @@
         </div>
     </a>
 </div>
-</div>
 
 <!-- Recent Activities Section -->
 <div class="mt-12 max-w-4xl">
