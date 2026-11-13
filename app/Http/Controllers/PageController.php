@@ -10,6 +10,8 @@ use App\Models\Gallery;
 use App\Models\ContactMessage;
 use App\Models\Faq;
 use App\Models\Testimonial;
+use App\Models\Aparatur;
+use App\Models\Dusun;
 
 class PageController extends Controller
 {
@@ -57,20 +59,8 @@ class PageController extends Controller
      */
     public function profil()
     {
-        // 4 Dusun specified in the PDF: Ngandong, Sumber, Karang Tengah, Kepyar
-        $dusun = [
-            ['name' => 'Dusun Kepyar', 'kadus' => 'Supriyanto', 'kk' => '320 KK', 'pilar' => 'Pertanian & UMKM'],
-            ['name' => 'Dusun Karang Tengah', 'kadus' => 'Jatmiko', 'kk' => '280 KK', 'pilar' => 'Agrowisata & Hortikultura'],
-            ['name' => 'Dusun Sumber', 'kadus' => 'Warsito', 'kk' => '250 KK', 'pilar' => 'Wisata Air & Hutan Rakyat'],
-            ['name' => 'Dusun Ngandong', 'kadus' => 'Marwan', 'kk' => '210 KK', 'pilar' => 'Petualangan Air & Peternakan'],
-        ];
-
-        $aparatur = [
-            ['role' => 'Kepala Desa', 'name' => 'Drs. H. Mulyono', 'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80'],
-            ['role' => 'Sekretaris Desa', 'name' => 'Rahmat Wijaya, S.E.', 'image' => 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80'],
-            ['role' => 'Kaur Keuangan', 'name' => 'Endah Lestari, A.Md.', 'image' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80'],
-            ['role' => 'Kasi Pelayanan', 'name' => 'Sugeng Riyadi', 'image' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80'],
-        ];
+        $dusun = Dusun::orderBy('order', 'asc')->get();
+        $aparatur = Aparatur::where('is_active', true)->orderBy('order', 'asc')->get();
 
         return view('profil', compact('dusun', 'aparatur'));
     }

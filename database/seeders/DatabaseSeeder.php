@@ -9,6 +9,8 @@ use App\Models\Event;
 use App\Models\Gallery;
 use App\Models\Faq;
 use App\Models\Testimonial;
+use App\Models\Aparatur;
+use App\Models\Dusun;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -341,8 +343,63 @@ class DatabaseSeeder extends Seeder
             'video_profile_youtube' => 'https://www.youtube.com',
         ];
 
-        foreach ($settingsData as $key => $value) {
-            \App\Models\SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+        // 9. Seed Aparatur Desa
+        $aparaturData = [
+            [
+                'role' => 'Kepala Desa',
+                'name' => 'Drs. H. Mulyono',
+                'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80',
+                'order' => 1,
+                'is_active' => true,
+            ],
+            [
+                'role' => 'Sekretaris Desa',
+                'name' => 'Rahmat Wijaya, S.E.',
+                'image' => 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80',
+                'order' => 2,
+                'is_active' => true,
+            ],
+            [
+                'role' => 'Kaur Keuangan',
+                'name' => 'Endah Lestari, A.Md.',
+                'image' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
+                'order' => 3,
+                'is_active' => true,
+            ],
+            [
+                'role' => 'Kasi Pelayanan',
+                'name' => 'Sugeng Riyadi',
+                'image' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+                'order' => 4,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($aparaturData as $a) {
+            Aparatur::updateOrCreate(['role' => $a['role']], $a);
+        }
+
+        // 10. Seed Dusun
+        $dusunData = [
+            ['name' => 'Dusun Kepyar', 'kadus' => 'Supriyanto', 'kk' => '320 KK', 'pilar' => 'Pertanian & UMKM', 'order' => 1],
+            ['name' => 'Dusun Karang Tengah', 'kadus' => 'Jatmiko', 'kk' => '280 KK', 'pilar' => 'Agrowisata & Hortikultura', 'order' => 2],
+            ['name' => 'Dusun Sumber', 'kadus' => 'Warsito', 'kk' => '250 KK', 'pilar' => 'Wisata Air & Hutan Rakyat', 'order' => 3],
+            ['name' => 'Dusun Ngandong', 'kadus' => 'Marwan', 'kk' => '210 KK', 'pilar' => 'Petualangan Air & Peternakan', 'order' => 4],
+        ];
+
+        foreach ($dusunData as $d) {
+            Dusun::updateOrCreate(['name' => $d['name']], $d);
+        }
+
+        // 11. Seed BPD Site Settings
+        $bpdSettings = [
+            'bpd_title' => 'Badan Permusyawaratan Desa (BPD)',
+            'bpd_description' => 'Sebagai mitra kerja pemerintah desa dalam mengawasi pelaksanaan APBDes, menampung aspirasi masyarakat dusun, serta menyusun Peraturan Desa secara demokratis.',
+            'bpd_badge' => 'Hubungan Harmonis & Adil',
+        ];
+
+        foreach ($bpdSettings as $key => $val) {
+            \App\Models\SiteSetting::firstOrCreate(['key' => $key], ['value' => $val]);
         }
     }
 }

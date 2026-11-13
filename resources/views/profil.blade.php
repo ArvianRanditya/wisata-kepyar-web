@@ -171,8 +171,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($aparatur as $a)
                 <div class="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm text-center hover:shadow-md transition-all group">
-                    <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-2 border-emerald-500/20 group-hover:border-emerald-500 transition-colors">
-                        <img src="{{ $a['image'] }}" alt="{{ $a['name'] }}" class="w-full h-full object-cover">
+                    <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-2 border-emerald-500/20 group-hover:border-emerald-500 transition-colors bg-slate-100">
+                        <img src="{{ $a['image'] ?: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80' }}" alt="{{ $a['name'] }}" class="w-full h-full object-cover">
                     </div>
                     <span class="block text-xxs font-bold text-emerald-600 uppercase tracking-wider mb-1">{{ $a['role'] }}</span>
                     <h4 class="font-bold text-slate-900 text-base font-display">{{ $a['name'] }}</h4>
@@ -183,13 +183,13 @@
         <!-- BPD Announcement Card -->
         <div class="mt-12 bg-white rounded-3xl p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="max-w-xl">
-                <h4 class="font-bold text-slate-900 text-lg">Badan Permusyawaratan Desa (BPD)</h4>
+                <h4 class="font-bold text-slate-900 text-lg">{{ \App\Models\SiteSetting::getValue('bpd_title', 'Badan Permusyawaratan Desa (BPD)') }}</h4>
                 <p class="text-slate-500 text-sm leading-relaxed mt-1">
-                    Sebagai mitra kerja pemerintah desa dalam mengawasi pelaksanaan APBDes, menampung aspirasi masyarakat dusun, serta menyusun Peraturan Desa secara demokratis.
+                    {{ \App\Models\SiteSetting::getValue('bpd_description', 'Sebagai mitra kerja pemerintah desa dalam mengawasi pelaksanaan APBDes, menampung aspirasi masyarakat dusun, serta menyusun Peraturan Desa secara demokratis.') }}
                 </p>
             </div>
             <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-4 py-2.5 rounded-xl shrink-0">
-                Hubungan Harmonis & Adil
+                {{ \App\Models\SiteSetting::getValue('bpd_badge', 'Hubungan Harmonis & Adil') }}
             </span>
         </div>
     </div>

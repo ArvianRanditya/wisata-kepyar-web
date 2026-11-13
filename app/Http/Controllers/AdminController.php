@@ -10,6 +10,9 @@ use App\Models\Gallery;
 use App\Models\ContactMessage;
 use App\Models\Faq;
 use App\Models\Testimonial;
+use App\Models\Aparatur;
+use App\Models\Dusun;
+use App\Models\SiteSetting;
 
 class AdminController extends Controller
 {
@@ -23,6 +26,8 @@ class AdminController extends Controller
             'umkm' => Umkm::count(),
             'event' => Event::count(),
             'gallery' => Gallery::count(),
+            'aparatur' => Aparatur::count(),
+            'dusun' => Dusun::count(),
         ];
 
         // Fetch recent updates from all tables to build a unified activity log
@@ -695,5 +700,195 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.settings.edit')->with('success', 'Pengaturan tampilan website berhasil diperbarui!');
+    }
+
+    /**
+     * Aparatur Desa (Struktur Pemerintahan) CRUD
+     */
+    public function aparaturIndex()
+    {
+        $aparaturs = Aparatur::orderBy('order', 'asc')->get();
+        $bpdTitle = SiteSetting::getValue('bpd_title', 'Badan Permusyawaratan Desa (BPD)');
+        $bpdDescription = SiteSetting::getValue('bpd_description', 'Sebagai mitra kerja pemerintah desa dalam mengawasi pelaksanaan APBDes, menampung aspirasi masyarakat dusun, serta menyusun Peraturan Desa secara demokratis.');
+        $bpdBadge = SiteSetting::getValue('bpd_badge', 'Hubungan Harmonis & Adil');
+
+        return view('admin.aparatur.index', compact('aparaturs', 'bpdTitle', 'bpdDescription', 'bpdBadge'));
+    }
+
+    public function aparaturCreate()
+    {
+        return view('admin.aparatur.create');
+    }
+
+    public function aparaturStore(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'image' => 'nullable|string|max:2048',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072',
+            'order' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        $validated['order'] = $validated['order'] ?? (Aparatur::max('order') + 1);
+        $validated['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $targetDir = public_path('uploads/aparatur');
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            $file->move($targetDir, $filename);
+            $validated['image'] = '/uploads/aparatur/' . $filename;
+        }
+
+        if (empty($validated['image'])) {
+            $validated['image'] = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80';
+        }
+
+        Aparatur::create($validated);
+
+        return redirect()->route('admin.aparatur.index')->with('success', 'Aparatur Desa berhasil ditambahkan!');
+    }
+
+    public function aparaturEdit($id)
+    {
+        $aparatur = Aparatur::findOrFail($id);
+        return view('admin.aparatur.edit', compact('aparatur'));
+    }
+
+    public function aparaturUpdate(Request $request, $id)
+    {
+        $aparatur = Aparatur::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'image' => 'nullable|string|max:2048',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:3072',
+            'order' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        $validated['order'] = $validated['order'] ?? $aparatur->order;
+        $validated['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image_file')) {
+            if ($aparatur->image && str_starts_with($aparatur->image, '/uploads/')) {
+                $oldPath = public_path($aparatur->image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+
+            $file = $request->file('image_file');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $targetDir = public_path('uploads/aparatur');
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            $file->move($targetDir, $filename);
+            $validated['image'] = '/uploads/aparatur/' . $filename;
+        }
+
+        $aparatur->update($validated);
+
+        return redirect()->route('admin.aparatur.index')->with('success', 'Data Aparatur Desa berhasil diperbarui!');
+    }
+
+    public function aparaturDestroy($id)
+    {
+        $aparatur = Aparatur::findOrFail($id);
+
+        if ($aparatur->image && str_starts_with($aparatur->image, '/uploads/')) {
+            $oldPath = public_path($aparatur->image);
+            if (file_exists($oldPath)) {
+                @unlink($oldPath);
+            }
+        }
+
+        $aparatur->delete();
+
+        return redirect()->route('admin.aparatur.index')->with('success', 'Aparatur Desa berhasil dihapus!');
+    }
+
+    public function aparaturUpdateBpd(Request $request)
+    {
+        $validated = $request->validate([
+            'bpd_title' => 'required|string|max:255',
+            'bpd_description' => 'required|string',
+            'bpd_badge' => 'required|string|max:255',
+        ]);
+
+        SiteSetting::setValue('bpd_title', $validated['bpd_title']);
+        SiteSetting::setValue('bpd_description', $validated['bpd_description']);
+        SiteSetting::setValue('bpd_badge', $validated['bpd_badge']);
+
+        return redirect()->route('admin.aparatur.index')->with('success', 'Informasi BPD berhasil diperbarui!');
+    }
+
+    /**
+     * Wilayah Dusun CRUD
+     */
+    public function dusunIndex()
+    {
+        $dusuns = Dusun::orderBy('order', 'asc')->get();
+        return view('admin.dusun.index', compact('dusuns'));
+    }
+
+    public function dusunCreate()
+    {
+        return view('admin.dusun.create');
+    }
+
+    public function dusunStore(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'kadus' => 'required|string|max:255',
+            'kk' => 'required|string|max:255',
+            'pilar' => 'required|string|max:255',
+            'order' => 'nullable|integer',
+        ]);
+
+        $validated['order'] = $validated['order'] ?? (Dusun::max('order') + 1);
+
+        Dusun::create($validated);
+
+        return redirect()->route('admin.dusun.index')->with('success', 'Wilayah Dusun berhasil ditambahkan!');
+    }
+
+    public function dusunEdit($id)
+    {
+        $dusun = Dusun::findOrFail($id);
+        return view('admin.dusun.edit', compact('dusun'));
+    }
+
+    public function dusunUpdate(Request $request, $id)
+    {
+        $dusun = Dusun::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'kadus' => 'required|string|max:255',
+            'kk' => 'required|string|max:255',
+            'pilar' => 'required|string|max:255',
+            'order' => 'nullable|integer',
+        ]);
+
+        $dusun->update($validated);
+
+        return redirect()->route('admin.dusun.index')->with('success', 'Data Wilayah Dusun berhasil diperbarui!');
+    }
+
+    public function dusunDestroy($id)
+    {
+        $dusun = Dusun::findOrFail($id);
+        $dusun->delete();
+
+        return redirect()->route('admin.dusun.index')->with('success', 'Wilayah Dusun berhasil dihapus!');
     }
 }

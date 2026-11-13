@@ -84,4 +84,21 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/messages', [AdminController::class, 'messagesIndex'])->name('messages.index');
     Route::post('/messages/{id}/read', [AdminController::class, 'messagesMarkAsRead'])->name('messages.read');
     Route::delete('/messages/{id}', [AdminController::class, 'messagesDestroy'])->name('messages.destroy');
+
+    // Aparatur Desa (Struktur Pemerintahan) CRUD
+    Route::get('/aparatur', [AdminController::class, 'aparaturIndex'])->name('aparatur.index');
+    Route::get('/aparatur/create', [AdminController::class, 'aparaturCreate'])->name('aparatur.create');
+    Route::post('/aparatur', [AdminController::class, 'aparaturStore'])->name('aparatur.store');
+    Route::put('/aparatur/bpd/update', [AdminController::class, 'aparaturUpdateBpd'])->name('aparatur.bpd.update');
+    Route::get('/aparatur/{id}/edit', [AdminController::class, 'aparaturEdit'])->name('aparatur.edit');
+    Route::put('/aparatur/{id}', [AdminController::class, 'aparaturUpdate'])->name('aparatur.update');
+    Route::delete('/aparatur/{id}', [AdminController::class, 'aparaturDestroy'])->name('aparatur.destroy');
+
+    // Wilayah Dusun CRUD
+    Route::get('/dusun', [AdminController::class, 'dusunIndex'])->name('dusun.index');
+    Route::get('/dusun/create', [AdminController::class, 'dusunCreate'])->name('dusun.create');
+    Route::post('/dusun', [AdminController::class, 'dusunStore'])->name('dusun.store');
+    Route::get('/dusun/{id}/edit', [AdminController::class, 'dusunEdit'])->name('dusun.edit');
+    Route::put('/dusun/{id}', [AdminController::class, 'dusunUpdate'])->name('dusun.update');
+    Route::delete('/dusun/{id}', [AdminController::class, 'dusunDestroy'])->name('dusun.destroy');
 });
