@@ -12,6 +12,7 @@ use App\Models\Faq;
 use App\Models\Testimonial;
 use App\Models\Aparatur;
 use App\Models\Dusun;
+use App\Models\Berita;
 use App\Models\SiteSetting;
 
 class AdminController extends Controller
@@ -28,6 +29,7 @@ class AdminController extends Controller
             'gallery' => Gallery::count(),
             'aparatur' => Aparatur::count(),
             'dusun' => Dusun::count(),
+            'berita' => Berita::count(),
         ];
 
         // Fetch recent updates from all tables to build a unified activity log
@@ -71,12 +73,23 @@ class AdminController extends Controller
             ];
         });
 
+        $recentBerita = Berita::orderBy('updated_at', 'desc')->take(5)->get()->map(function($item) {
+            return [
+                'type' => 'Berita',
+                'title' => $item->title,
+                'action' => 'diperbarui',
+                'time' => $item->updated_at,
+                'badge' => 'bg-sky-50 text-sky-700 border-sky-100'
+            ];
+        });
+
         // Merge, sort, and slice to get the latest 5 activities
         $activities = collect()
             ->concat($recentWisata)
             ->concat($recentUmkm)
             ->concat($recentEvent)
             ->concat($recentGallery)
+            ->concat($recentBerita)
             ->sortByDesc('time')
             ->take(5)
             ->values()
@@ -662,6 +675,7 @@ class AdminController extends Controller
             'banner_profil',
             'banner_galeri',
             'banner_event',
+            'banner_berita',
             'banner_budaya',
             'budaya_image_karawitan',
             'budaya_image_ketoprak',
@@ -890,5 +904,135 @@ class AdminController extends Controller
         $dusun->delete();
 
         return redirect()->route('admin.dusun.index')->with('success', 'Wilayah Dusun berhasil dihapus!');
+    }
+
+    // =========================================================================
+    // BERITA & ARTIKEL CRUD
+    // =========================================================================
+
+    public function beritaIndex()
+    {
+        $beritas = Berita::orderBy('created_at', 'desc')->get();
+        return view('admin.berita.index', compact('beritas'));
+    }
+
+    public function beritaCreate()
+    {
+        return view('admin.berita.create');
+    }
+
+    public function beritaStore(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'excerpt' => 'required|string|max:500',
+            'content' => 'required|string',
+            'author' => 'nullable|string|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image_url' => 'nullable|url|max:500',
+            'is_published' => 'nullable|boolean',
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('uploads/berita');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $fileName = time() . '_' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move($destinationPath, $fileName);
+            $imagePath = '/uploads/berita/' . $fileName;
+        } elseif (!empty($request->input('image_url'))) {
+            $imagePath = $request->input('image_url');
+        }
+
+        $isPublished = $request->has('is_published') ? (bool)$request->is_published : true;
+
+        Berita::create([
+            'title' => $validated['title'],
+            'category' => $validated['category'],
+            'excerpt' => $validated['excerpt'],
+            'content' => $validated['content'],
+            'author' => $validated['author'] ?? 'Admin Desa Kepyar',
+            'image' => $imagePath,
+            'is_published' => $isPublished,
+            'published_at' => $isPublished ? now() : null,
+        ]);
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diterbitkan!');
+    }
+
+    public function beritaEdit($id)
+    {
+        $berita = Berita::findOrFail($id);
+        return view('admin.berita.edit', compact('berita'));
+    }
+
+    public function beritaUpdate(Request $request, $id)
+    {
+        $berita = Berita::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'excerpt' => 'required|string|max:500',
+            'content' => 'required|string',
+            'author' => 'nullable|string|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image_url' => 'nullable|url|max:500',
+            'is_published' => 'nullable|boolean',
+        ]);
+
+        $imagePath = $berita->image;
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('uploads/berita');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            // Delete old file if local
+            if ($berita->image && str_starts_with($berita->image, '/uploads/')) {
+                $oldFile = public_path($berita->image);
+                if (file_exists($oldFile)) {
+                    @unlink($oldFile);
+                }
+            }
+            $fileName = time() . '_' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move($destinationPath, $fileName);
+            $imagePath = '/uploads/berita/' . $fileName;
+        } elseif ($request->filled('image_url')) {
+            $imagePath = $request->input('image_url');
+        }
+
+        $isPublished = $request->has('is_published') ? (bool)$request->is_published : false;
+
+        $berita->update([
+            'title' => $validated['title'],
+            'category' => $validated['category'],
+            'excerpt' => $validated['excerpt'],
+            'content' => $validated['content'],
+            'author' => $validated['author'] ?? $berita->author,
+            'image' => $imagePath,
+            'is_published' => $isPublished,
+            'published_at' => ($isPublished && !$berita->published_at) ? now() : $berita->published_at,
+        ]);
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui!');
+    }
+
+    public function beritaDestroy($id)
+    {
+        $berita = Berita::findOrFail($id);
+
+        if ($berita->image && str_starts_with($berita->image, '/uploads/')) {
+            $oldPath = public_path($berita->image);
+            if (file_exists($oldPath)) {
+                @unlink($oldPath);
+            }
+        }
+
+        $berita->delete();
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus!');
     }
 }

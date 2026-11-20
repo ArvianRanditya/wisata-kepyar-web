@@ -13,6 +13,8 @@ Route::get('/wisata', [PageController::class, 'wisata'])->name('wisata');
 Route::get('/budaya', [PageController::class, 'budaya'])->name('budaya');
 Route::get('/umkm', [PageController::class, 'umkm'])->name('umkm');
 Route::get('/event', [PageController::class, 'event'])->name('event');
+Route::get('/berita', [PageController::class, 'berita'])->name('berita');
+Route::get('/berita/{slug}', [PageController::class, 'beritaDetail'])->name('berita.detail');
 Route::get('/galeri-kontak', [PageController::class, 'galeriKontak'])->name('galeri-kontak');
 Route::post('/kontak', [PageController::class, 'submitKontak'])->name('kontak.submit');
 Route::post('/testimoni', [PageController::class, 'submitTestimoni'])->name('testimonial.submit');
@@ -57,6 +59,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/event/{id}/edit', [AdminController::class, 'eventEdit'])->name('event.edit');
     Route::put('/event/{id}', [AdminController::class, 'eventUpdate'])->name('event.update');
     Route::delete('/event/{id}', [AdminController::class, 'eventDestroy'])->name('event.destroy');
+
+    // Berita CRUD
+    Route::get('/berita', [AdminController::class, 'beritaIndex'])->name('berita.index');
+    Route::get('/berita/create', [AdminController::class, 'beritaCreate'])->name('berita.create');
+    Route::post('/berita', [AdminController::class, 'beritaStore'])->name('berita.store');
+    Route::get('/berita/{id}/edit', [AdminController::class, 'beritaEdit'])->name('berita.edit');
+    Route::put('/berita/{id}', [AdminController::class, 'beritaUpdate'])->name('berita.update');
+    Route::delete('/berita/{id}', [AdminController::class, 'beritaDestroy'])->name('berita.destroy');
 
     // Gallery CRUD
     Route::get('/gallery', [AdminController::class, 'galleryIndex'])->name('gallery.index');

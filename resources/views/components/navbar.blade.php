@@ -63,6 +63,10 @@
                     Event
                 </a>
 
+                <a href="{{ route('berita') }}" class="px-3 py-2 rounded-lg text-sm font-semibold {{ request()->routeIs('berita*') ? 'text-emerald-600 bg-emerald-50/50' : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50' }} transition-all">
+                    Berita
+                </a>
+
                 <a href="{{ route('galeri-kontak') }}" class="ml-2 inline-flex items-center justify-center px-4 py-2.5 border border-transparent text-sm font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-500/10 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 transition-all">
                     Hubungi Kami
                 </a>
@@ -122,6 +126,10 @@
 
             <a href="{{ route('event') }}" class="block px-3 py-2.5 rounded-xl text-base font-semibold {{ request()->routeIs('event') ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:bg-slate-50' }}">
                 Event
+            </a>
+
+            <a href="{{ route('berita') }}" class="block px-3 py-2.5 rounded-xl text-base font-semibold {{ request()->routeIs('berita*') ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:bg-slate-50' }}">
+                Berita
             </a>
 
             <a href="{{ route('galeri-kontak') }}" class="block px-3 py-2.5 rounded-xl text-base font-semibold {{ request()->routeIs('galeri-kontak') ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:bg-slate-50' }}">

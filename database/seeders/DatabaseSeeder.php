@@ -11,6 +11,7 @@ use App\Models\Faq;
 use App\Models\Testimonial;
 use App\Models\Aparatur;
 use App\Models\Dusun;
+use App\Models\Berita;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -400,6 +401,69 @@ class DatabaseSeeder extends Seeder
 
         foreach ($bpdSettings as $key => $val) {
             \App\Models\SiteSetting::firstOrCreate(['key' => $key], ['value' => $val]);
+        }
+
+        // 12. Seed Berita & Artikel Desa
+        $beritaData = [
+            [
+                'title' => 'Peningkatan Jalur Wisata Bukit Cumbri dan Akses Pertanian Dusun Karang Tengah Selesai Dikerjakan',
+                'category' => 'Pembangunan',
+                'excerpt' => 'Pemerintah Desa Kepyar bersama warga berhasil menyelesaikan rabat beton jalan menuju pos pendakian Bukit Cumbri guna mempermudah mobilitas wisatawan dan petani lokal.',
+                'content' => "<p>Pemerintah Desa Kepyar bersama masyarakat gotong-royong menyelesaikan pembangunan rabat beton jalur penghubung antara Dusun Karang Tengah menuju pos pendakian Bukit Cumbri. Pembangunan sepanjang 850 meter ini didanai melalui optimalisasi Dana Desa tahun anggaran berjalan serta swadaya masyarakat.</p>\n\n<p>Kepala Desa Kepyar, Bapak Suparman, menyampaikan rasa syukurnya atas sinergi warga yang kompak menyelesaikan proyek tepat waktu. 'Dengan mulusnya akses jalan ini, wisatawan yang hendak menikmati sunrise di puncak Cumbri dapat berkendara dengan lebih aman dan nyaman. Di sisi lain, para petani kami juga tidak lagi kesulitan mengangkut hasil panen palawija dan hortikultura,' tuturnya saat meninjau lokasi.</p>\n\n<p>Selain perkerasan jalan, dipasang pula penerangan jalan bertenaga surya (PJU Solar Cell) pada beberapa titik belokan curam untuk meningkatkan keselamatan pengunjung di malam dan dini hari menjelang subuh.</p>",
+                'image' => 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800',
+                'author' => 'Pemerintah Desa Kepyar',
+                'views' => 142,
+                'is_published' => true,
+                'published_at' => now()->subDays(2),
+            ],
+            [
+                'title' => 'Pelatihan Digital Marketing & Kurasi Produk UMKM Kerajinan Bambu Ibu-Ibu PKK Desa Kepyar',
+                'category' => 'UMKM',
+                'excerpt' => 'Upaya memperluas jangkauan pasar kerajinan anyaman bambu dan olahan herbal lokal, Pemdes menyelenggarakan workshop strategi penjualan e-commerce dan foto produk.',
+                'content' => "<p>Dalam rangka mendorong kemandirian ekonomi pasca panen, kelompok ibu-ibu PKK Desa Kepyar mengikuti pelatihan pemasaran digital dan packaging modern untuk produk kerajinan anyaman bambu khas Dusun Kepyar.</p>\n\n<p>Pelatihan yang bertempat di Balai Desa Kepyar ini mengundang praktisi e-commerce dan desainer grafis. Para peserta dibimbing langsung cara mengambil foto produk yang estetik menggunakan smartphone, menulis deskripsi produk yang menarik pembeli, hingga cara mengelola akun toko di marketplace dan media sosial.</p>\n\n<p>Ibu Sri Wahyuni, salah satu perajin besek dan wadah bambu, mengaku sangat terbantu dengan adanya pelatihan ini. 'Dulu kami hanya menunggu tengkulak datang. Sekarang kami diajari cara memposting ke Instagram dan Shopee dengan foto yang jernih. Pesanan dari luar kota bahkan mulai berdatangan,' ungkapnya antusias.</p>",
+                'image' => 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&q=80&w=800',
+                'author' => 'Tim Penggerak PKK',
+                'views' => 98,
+                'is_published' => true,
+                'published_at' => now()->subDays(5),
+            ],
+            [
+                'title' => 'Semarak Pagelaran Seni Karawitan Setia Iromo dan Tradisi Bersih Dusun Sumber',
+                'category' => 'Budaya',
+                'excerpt' => 'Warga Dusun Sumber menggelar tradisi tahunan bersih dusun yang dirangkaikan dengan gending karawitan semalam suntuk sebagai wujud syukur atas limpahan mata air alami.',
+                'content' => "<p>Suasana syahdu dan penuh kekeluargaan menyelimuti Dusun Sumber, Desa Kepyar, saat ratusan warga berkumpul merayakan tradisi tahunan Bersih Dusun. Acara dimulai dengan kirab tumpeng sedekah bumi mengitari mata air Air Terjun Sanginan dan diakhiri dengan doa bersama serta kenduri massal.</p>\n\n<p>Malam harinya, Paguyuban Karawitan Setia Iromo menyuguhkan tembang-tembang macapat dan gending Jawa klasik yang memukau para sesepuh serta generasi muda desa. Pelestarian kebudayaan leluhur ini menjadi komitmen kuat warga Kepyar di tengah arus modernisasi.</p>\n\n<p>'Tradisi ini bukan sekadar seremonial, melainkan pengingat kita semua untuk senantiasa menjaga kelestarian hutan lindung dan sumber mata air yang menghidupi persawahan kami,' pesan sesepuh dusun di sela acara.</p>",
+                'image' => 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800',
+                'author' => 'Pokdarwis Kepyar',
+                'views' => 210,
+                'is_published' => true,
+                'published_at' => now()->subDays(9),
+            ],
+            [
+                'title' => 'Fasilitas River Tubing Sungai Kresek Siap Manjakan Pengunjung di Musim Liburan',
+                'category' => 'Wisata',
+                'excerpt' => 'Kelompok Sadar Wisata (Pokdarwis) menambah pelampung berstandar SNI, helm pelindung baru, dan pos rest area di titik finis Sungai Kresek.',
+                'content' => "<p>Menyambut musim liburan sekolah dan akhir pekan panjang, daya tarik petualangan air Tubing Sungai Kresek di Desa Kepyar berbenah. Pengelola Pokdarwis Desa Kepyar kini telah melengkapi sarana keselamatan dengan 30 unit ban pelampung ganda, helm pelindung standar olahraga arus deras, serta rompi pelampung (life jacket) bersertifikat.</p>\n\n<p>Ketua Pokdarwis menjelaskan bahwa keamanan dan kenyamanan pengunjung adalah prioritas utama. Seluruh pemandu river tubing telah mengantongi sertifikasi rescue perairan dari Badan SAR dan dibekali SOP pertolongan pertama.</p>\n\n<p>Di samping itu, telah dibangun gazebo istirahat di titik finish yang menyajikan sajian kuliner khas desa seperti nasi tiwul, tempe goreng hangat, dan wedang jahe sereh gula aren.</p>",
+                'image' => 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&q=80&w=800',
+                'author' => 'Pokdarwis Kepyar',
+                'views' => 175,
+                'is_published' => true,
+                'published_at' => now()->subDays(14),
+            ],
+            [
+                'title' => 'Peluncuran Portal Website Desa Kepyar: Akses Layanan & Informasi Lebih Mudah dan Terbuka',
+                'category' => 'Pengumuman',
+                'excerpt' => 'Website resmi Desa Kepyar kini hadir dengan sistem informasi terpadu yang memuat profil desa, paket wisata alam, katalog UMKM, agenda event, dan berita berkala.',
+                'content' => "<p>Sebagai wujud transparansi publik dan pemanfaatan teknologi informasi di pedesaan, Pemerintah Desa Kepyar resmi meluncurkan portal website desa mandiri di domain kepyar-sumunar.com.</p>\n\n<p>Melalui portal ini, masyarakat luas baik warga setempat maupun wisatawan luar kota dapat dengan mudah mengeksplorasi destinasi unggulan seperti Bukit Cumbri dan Air Terjun Sanginan, memesan produk kerajinan khas desa, serta melihat kalender kegiatan budaya seperti karnaval dan bersih dusun.</p>\n\n<p>Admin desa juga dapat mengelola artikel informasi terkini secara mandiri lewat dashboard terintegrasi, menjadikan keterbukaan informasi publik berjalan secara berkelanjutan.</p>",
+                'image' => 'https://images.unsplash.com/photo-1472214222541-d510753a8707?auto=format&fit=crop&q=80&w=800',
+                'author' => 'Admin Desa Kepyar',
+                'views' => 320,
+                'is_published' => true,
+                'published_at' => now()->subDays(20),
+            ],
+        ];
+
+        foreach ($beritaData as $b) {
+            Berita::updateOrCreate(['title' => $b['title']], $b);
         }
     }
 }

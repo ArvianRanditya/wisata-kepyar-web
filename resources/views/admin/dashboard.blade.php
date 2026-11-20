@@ -23,7 +23,7 @@
 </div>
 
 <!-- Statistics Cards -->
-<div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+<div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     <!-- Wisata Stat Card -->
     <a href="{{ route('admin.wisata.index') }}" class="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm hover:shadow-md hover:border-emerald-500/10 transition-all flex flex-col justify-between group">
         <div class="flex items-center justify-between mb-4">
@@ -86,6 +86,22 @@
         <div>
             <span class="block text-3xl font-extrabold text-slate-900 font-display">{{ $stats['gallery'] }}</span>
             <span class="block text-xs font-bold text-slate-500 mt-1">Foto Galeri</span>
+        </div>
+    </a>
+
+    <!-- Berita Stat Card -->
+    <a href="{{ route('admin.berita.index') }}" class="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm hover:shadow-md hover:border-emerald-500/10 transition-all flex flex-col justify-between group">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+            </div>
+            <span class="text-xxs font-extrabold text-slate-400 uppercase tracking-wider">Kelola</span>
+        </div>
+        <div>
+            <span class="block text-3xl font-extrabold text-slate-900 font-display">{{ $stats['berita'] ?? 0 }}</span>
+            <span class="block text-xs font-bold text-slate-500 mt-1">Berita & Artikel</span>
         </div>
     </a>
 

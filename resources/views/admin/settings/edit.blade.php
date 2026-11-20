@@ -83,6 +83,7 @@
                     ['key' => 'banner_budaya', 'label' => 'Banner Halaman Seni & Budaya', 'default' => 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=1200'],
                     ['key' => 'banner_umkm', 'label' => 'Banner Halaman UMKM & Produk', 'default' => 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&q=80&w=1200'],
                     ['key' => 'banner_event', 'label' => 'Banner Halaman Event', 'default' => 'https://images.unsplash.com/photo-1534385842125-8c9ad2bd7f3b?auto=format&fit=crop&q=80&w=1200'],
+                    ['key' => 'banner_berita', 'label' => 'Banner Halaman Berita & Artikel', 'default' => 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=1200'],
                     ['key' => 'banner_galeri', 'label' => 'Banner Halaman Galeri & Kontak', 'default' => 'https://images.unsplash.com/photo-1544654803-b69140b285a1?auto=format&fit=crop&q=80&w=1200'],
                     ['key' => 'budaya_image_karawitan', 'label' => 'Foto Kesenian: Karawitan Jawa', 'default' => 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800'],
                     ['key' => 'budaya_image_ketoprak', 'label' => 'Foto Kesenian: Ketoprak Tradisional', 'default' => 'https://images.unsplash.com/photo-1534385842125-8c9ad2bd7f3b?auto=format&fit=crop&q=80&w=800'],

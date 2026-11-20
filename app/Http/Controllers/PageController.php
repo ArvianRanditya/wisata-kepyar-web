@@ -12,6 +12,7 @@ use App\Models\Faq;
 use App\Models\Testimonial;
 use App\Models\Aparatur;
 use App\Models\Dusun;
+use App\Models\Berita;
 
 class PageController extends Controller
 {
@@ -106,6 +107,58 @@ class PageController extends Controller
     {
         $eventList = Event::all()->toArray();
         return view('event', compact('eventList'));
+    }
+
+    /**
+     * Berita Page Action (Listing & Filter)
+     */
+    public function berita(Request $request)
+    {
+        $query = Berita::where('is_published', true)->orderBy('published_at', 'desc');
+
+        if ($request->filled('q')) {
+            $search = $request->input('q');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%")
+                  ->orWhere('excerpt', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('kategori') && $request->input('kategori') !== 'semua') {
+            $query->where('category', $request->input('kategori'));
+        }
+
+        $beritaList = $query->paginate(9)->withQueryString();
+        $categories = Berita::where('is_published', true)->pluck('category')->unique()->values();
+        $recentBeritas = Berita::where('is_published', true)->orderBy('published_at', 'desc')->take(4)->get();
+
+        return view('berita', compact('beritaList', 'categories', 'recentBeritas'));
+    }
+
+    /**
+     * Berita Detail Action
+     */
+    public function beritaDetail($slug)
+    {
+        $berita = Berita::where('slug', $slug)->where('is_published', true)->firstOrFail();
+        $berita->increment('views');
+
+        $relatedBeritas = Berita::where('is_published', true)
+            ->where('id', '!=', $berita->id)
+            ->where('category', $berita->category)
+            ->take(3)
+            ->get();
+
+        if ($relatedBeritas->isEmpty()) {
+            $relatedBeritas = Berita::where('is_published', true)
+                ->where('id', '!=', $berita->id)
+                ->orderBy('published_at', 'desc')
+                ->take(3)
+                ->get();
+        }
+
+        return view('berita-detail', compact('berita', 'relatedBeritas'));
     }
 
     /**

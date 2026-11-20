@@ -45,6 +45,7 @@
                     <li><a href="{{ route('budaya') }}" class="hover:text-emerald-500 transition-colors">Seni & Budaya</a></li>
                     <li><a href="{{ route('umkm') }}" class="hover:text-emerald-500 transition-colors">UMKM Produk</a></li>
                     <li><a href="{{ route('event') }}" class="hover:text-emerald-500 transition-colors">Event Desa</a></li>
+                    <li><a href="{{ route('berita') }}" class="hover:text-emerald-500 transition-colors">Kabar & Berita</a></li>
                 </ul>
             </div>
 
