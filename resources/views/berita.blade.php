@@ -6,7 +6,7 @@
 
 @section('content')
 <!-- Header Page Banner -->
-<section class="relative bg-slate-900 py-20 text-white overflow-hidden">
+<section class="relative bg-slate-900 py-16 sm:py-20 text-white overflow-hidden">
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-slate-950/80 z-10"></div>
         <img src="{{ \App\Models\SiteSetting::getValue('banner_berita', 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=1200') }}" alt="Berita Desa Kepyar" class="w-full h-full object-cover">
@@ -15,28 +15,28 @@
         <span class="inline-block text-xxs font-bold text-emerald-300 uppercase tracking-widest bg-emerald-500/20 px-3.5 py-1.5 rounded-full border border-emerald-500/30 mb-4">
             Kabar & Publikasi Resmi
         </span>
-        <h1 class="text-4xl sm:text-5xl font-extrabold font-display tracking-tight text-white mb-4">
+        <h1 class="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-white mb-4">
             Warta & Informasi Desa Kepyar
         </h1>
-        <p class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+        <p class="text-slate-300 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
             Menyajikan perkembangan pembangunan dusun, geliat UMKM warga, pelestarian adat budaya, serta pengumuman layanan masyarakat secara transparan.
         </p>
 
-        <!-- Search Form -->
+        <!-- Search Form (Flexbox, Anti-Overlap) -->
         <div class="mt-8 max-w-xl mx-auto">
-            <form action="{{ route('berita') }}" method="GET" class="relative">
+            <form action="{{ route('berita') }}" method="GET">
                 @if(request('kategori'))
                     <input type="hidden" name="kategori" value="{{ request('kategori') }}">
                 @endif
-                <div class="relative flex items-center">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400">
+                <div class="flex items-center bg-white rounded-2xl p-1.5 shadow-xl border border-white/20">
+                    <div class="pl-4 pr-2 text-slate-400 shrink-0">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                    </span>
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari judul atau topik berita..." 
-                           class="w-full pl-12 pr-28 py-3.5 rounded-2xl bg-white/95 text-slate-800 placeholder-slate-400 font-medium text-sm focus:outline-none focus:ring-4 focus:ring-emerald-500/30 transition-all shadow-lg shadow-black/20">
-                    <button type="submit" class="absolute right-2 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all">
+                    </div>
+                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari topik atau judul berita..." 
+                           class="w-full py-2.5 px-2 bg-transparent text-slate-800 placeholder-slate-400 font-medium text-xs sm:text-sm focus:outline-none">
+                    <button type="submit" class="shrink-0 px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all">
                         Cari
                     </button>
                 </div>
@@ -46,25 +46,25 @@
 </section>
 
 <!-- Main Content Area -->
-<section class="py-16 bg-slate-50 min-h-screen">
+<section class="py-14 sm:py-16 bg-slate-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Category Filter Chips -->
-        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
+        <div class="flex flex-wrap items-center justify-center gap-2.5 mb-10">
             <a href="{{ route('berita', array_filter(['q' => request('q')])) }}" 
-               class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all {{ !request('kategori') || request('kategori') === 'semua' ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/10' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100' }}">
+               class="px-4 sm:px-5 py-2.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-bold border transition-all {{ !request('kategori') || request('kategori') === 'semua' ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/10' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
                 Semua Kategori
             </a>
             @foreach($categories as $cat)
                 <a href="{{ route('berita', array_filter(['kategori' => $cat, 'q' => request('q')])) }}" 
-                   class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all {{ request('kategori') === $cat ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/10' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100' }}">
+                   class="px-4 sm:px-5 py-2.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-bold border transition-all {{ request('kategori') === $cat ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/10' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
                     {{ $cat }}
                 </a>
             @endforeach
         </div>
 
         @if(request('q') || request('kategori'))
-            <div class="mb-8 flex items-center justify-between bg-white px-5 py-3.5 rounded-2xl border border-slate-200 text-xs text-slate-600">
+            <div class="mb-8 flex items-center justify-between bg-white px-5 py-3.5 rounded-2xl border border-slate-200 text-xs text-slate-600 shadow-xs">
                 <div>
                     Menampilkan hasil 
                     @if(request('q')) untuk pencarian <span class="font-bold text-slate-900">"{{ request('q') }}"</span> @endif
@@ -76,14 +76,16 @@
         @endif
 
         @if($beritaList->count() > 0)
-            <!-- News Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Symmetrical News Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 @foreach($beritaList as $berita)
-                    <article class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 flex flex-col group">
-                        <!-- Image Container -->
-                        <div class="relative h-52 sm:h-56 overflow-hidden bg-slate-100">
+                    <article class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 flex flex-col group h-full">
+                        <!-- Image Container with fallback -->
+                        <div class="relative h-52 sm:h-56 overflow-hidden bg-slate-100 shrink-0">
                             @if($berita->image)
-                                <img src="{{ $berita->image }}" alt="{{ $berita->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="{{ $berita->image }}" alt="{{ $berita->title }}" 
+                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800';"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-tr from-emerald-800 to-teal-700 text-white/50">
                                     <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
@@ -91,32 +93,36 @@
                                     </svg>
                                 </div>
                             @endif
-                            <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-md text-emerald-800 text-xxs font-extrabold uppercase tracking-wider rounded-lg shadow-sm border border-emerald-100">
-                                {{ $berita->category }}
-                            </span>
-                            <span class="absolute bottom-3 right-4 px-2.5 py-1 bg-slate-900/70 backdrop-blur-sm text-white text-xxs font-semibold rounded-md flex items-center space-x-1">
-                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                                {{ number_format($berita->views) }}
-                            </span>
+                            <div class="absolute top-4 left-4 z-10">
+                                <span class="px-3 py-1 bg-white/95 backdrop-blur-md text-emerald-800 text-xxs font-extrabold uppercase tracking-wider rounded-lg shadow-sm border border-emerald-100/80">
+                                    {{ $berita->category }}
+                                </span>
+                            </div>
+                            <div class="absolute bottom-3 right-4 z-10">
+                                <span class="px-2.5 py-1 bg-slate-900/80 backdrop-blur-sm text-white text-xxs font-semibold rounded-md flex items-center space-x-1">
+                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    {{ number_format($berita->views) }}
+                                </span>
+                            </div>
                         </div>
 
                         <!-- Card Body -->
                         <div class="p-6 flex-1 flex flex-col justify-between">
                             <div>
-                                <div class="flex items-center text-slate-400 text-xxs font-semibold space-x-3 mb-2.5">
+                                <div class="flex items-center text-slate-400 text-xxs font-semibold space-x-2.5 mb-2.5">
                                     <span class="flex items-center">
                                         <svg class="w-3.5 h-3.5 mr-1 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                         {{ $berita->published_at ? $berita->published_at->format('d M Y') : $berita->created_at->format('d M Y') }}
                                     </span>
-                                    <span>•</span>
+                                    <span>&bull;</span>
                                     <span>{{ $berita->reading_time }} mnt baca</span>
                                 </div>
-                                <h2 class="text-lg font-bold font-display text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-2 leading-snug">
+                                <h2 class="text-base sm:text-lg font-bold font-display text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-2 leading-snug">
                                     <a href="{{ route('berita.detail', $berita->slug) }}">
                                         {{ $berita->title }}
                                     </a>
@@ -126,7 +132,7 @@
                                 </p>
                             </div>
 
-                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
                                 <span class="text-xxs font-medium text-slate-400 truncate max-w-[150px]">
                                     Oleh: <strong class="text-slate-600">{{ $berita->author }}</strong>
                                 </span>

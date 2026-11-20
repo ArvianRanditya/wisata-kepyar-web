@@ -454,7 +454,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'Pengumuman',
                 'excerpt' => 'Website resmi Desa Kepyar kini hadir dengan sistem informasi terpadu yang memuat profil desa, paket wisata alam, katalog UMKM, agenda event, dan berita berkala.',
                 'content' => "<p>Sebagai wujud transparansi publik dan pemanfaatan teknologi informasi di pedesaan, Pemerintah Desa Kepyar resmi meluncurkan portal website desa mandiri di domain kepyar-sumunar.com.</p>\n\n<p>Melalui portal ini, masyarakat luas baik warga setempat maupun wisatawan luar kota dapat dengan mudah mengeksplorasi destinasi unggulan seperti Bukit Cumbri dan Air Terjun Sanginan, memesan produk kerajinan khas desa, serta melihat kalender kegiatan budaya seperti karnaval dan bersih dusun.</p>\n\n<p>Admin desa juga dapat mengelola artikel informasi terkini secara mandiri lewat dashboard terintegrasi, menjadikan keterbukaan informasi publik berjalan secara berkelanjutan.</p>",
-                'image' => 'https://images.unsplash.com/photo-1472214222541-d510753a8707?auto=format&fit=crop&q=80&w=800',
+                'image' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800',
                 'author' => 'Admin Desa Kepyar',
                 'views' => 320,
                 'is_published' => true,
