@@ -20,6 +20,7 @@ Route::post('/kontak', [PageController::class, 'submitKontak'])->name('kontak.su
 Route::post('/testimoni', [PageController::class, 'submitTestimoni'])->name('testimonial.submit');
 
 // Login & Authentication Routes
+Route::get('/login', fn() => redirect()->route('admin.login'))->name('login');
 Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
