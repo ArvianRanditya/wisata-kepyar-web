@@ -177,7 +177,7 @@
                                     </div>
                                 @endif
                                 <div class="absolute top-3 left-3 z-10">
-                                    <span class="px-2.5 py-1 bg-white/95 backdrop-blur-sm text-emerald-800 text-xxs font-extrabold uppercase tracking-wider rounded-lg shadow-xs">
+                                    <span class="px-2.5 py-1 bg-white text-emerald-800 text-xxs font-extrabold uppercase tracking-wider rounded-lg shadow-md border border-slate-100">
                                         {{ $rel->category }}
                                     </span>
                                 </div>

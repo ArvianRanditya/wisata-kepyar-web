@@ -94,7 +94,7 @@
                                 </div>
                             @endif
                             <div class="absolute top-4 left-4 z-10">
-                                <span class="px-3 py-1 bg-white/95 backdrop-blur-md text-emerald-800 text-xxs font-extrabold uppercase tracking-wider rounded-lg shadow-sm border border-emerald-100/80">
+                                <span class="px-3 py-1 bg-white text-emerald-800 text-xxs font-extrabold uppercase tracking-wider rounded-lg shadow-md border border-slate-100">
                                     {{ $berita->category }}
                                 </span>
                             </div>
